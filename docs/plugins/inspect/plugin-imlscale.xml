@@ -1,7 +1,7 @@
 <plugin>
-  <name>videoscale</name>
+  <name>imlscale</name>
   <description>Resizes video</description>
-  <filename>../../gst/videoscale/.libs/libgstvideoscale.so</filename>
+  <filename>../../gst/imlscale/.libs/libgstimlscale.so</filename>
   <basename>libgstvideoscale.so</basename>
   <version>1.16.1</version>
   <license>LGPL</license>
@@ -10,7 +10,7 @@
   <origin>Unknown package origin</origin>
   <elements>
     <element>
-      <name>videoscale</name>
+      <name>imlscale</name>
       <longname>Video scaler</longname>
       <class>Filter/Converter/Video/Scaler</class>
       <description>Resizes video</description>
