@@ -85,6 +85,7 @@
     <xi:include href="xml/element-glvideomixerelement.xml" />
     <xi:include href="xml/element-glvideomixer.xml" />
     <xi:include href="xml/element-glviewconvert.xml" />
+    <xi:include href="xml/element-imlscale.xml" />
     <xi:include href="xml/element-multifdsink.xml" />
     <xi:include href="xml/element-multisocketsink.xml" />
     <xi:include href="xml/element-oggaviparse.xml" />
@@ -149,6 +150,7 @@
     <xi:include href="xml/plugin-compositor.xml" />
     <xi:include href="xml/plugin-encoding.xml" />
     <xi:include href="xml/plugin-gio.xml" />
+    <xi:include href="xml/plugin-imlscale.xml" />
     <xi:include href="xml/plugin-ivorbisdec.xml" />
     <xi:include href="xml/plugin-libvisual.xml" />
     <xi:include href="xml/plugin-ogg.xml" />
