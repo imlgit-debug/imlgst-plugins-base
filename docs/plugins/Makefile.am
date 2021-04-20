@@ -84,6 +84,7 @@ EXTRA_HFILES = \
 	$(top_srcdir)/gst/playback/gstsubtitleoverlay.h \
 	$(top_srcdir)/gst/audiorate/gstaudiorate.h \
 	$(top_srcdir)/gst/audioresample/gstaudioresample.h \
+	$(top_srcdir)/gst/imlscale/gstimlscale.h \
 	$(top_srcdir)/gst/overlaycomposition/gstoverlaycomposition.h \
 	$(top_srcdir)/gst/rawparse/gstrawaudioparse.h \
 	$(top_srcdir)/gst/rawparse/gstrawvideoparse.h \
