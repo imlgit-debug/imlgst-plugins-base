@@ -76,8 +76,8 @@ enum
 #define VIDEO_SINK_CAPS \
     GST_VIDEO_CAPS_MAKE("{ I420, Y444, Y42B, UYVY, RGBA }")
 
-
 /* class initialization */
+#define GST_VIDEO_FORMATS GST_VIDEO_FORMATS_ALL
 
 G_DEFINE_TYPE_WITH_CODE (GstImlscale, gst_imlscale, GST_TYPE_VIDEO_FILTER,
   GST_DEBUG_CATEGORY_INIT (gst_imlscale_debug_category, "imlscale", 0,
