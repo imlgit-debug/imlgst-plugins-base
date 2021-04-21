@@ -512,6 +512,7 @@ AG_GST_CHECK_PLUGIN(typefind)
 AG_GST_CHECK_PLUGIN(videotestsrc)
 AG_GST_CHECK_PLUGIN(videorate)
 AG_GST_CHECK_PLUGIN(videoscale)
+AG_GST_CHECK_PLUGIN(imlscale)
 AG_GST_CHECK_PLUGIN(volume)
 
 dnl iso-codes is optional, used by libgsttag
@@ -937,6 +938,7 @@ gst/typefind/Makefile
 gst/videotestsrc/Makefile
 gst/videorate/Makefile
 gst/videoscale/Makefile
+gst/imlscale/Makefile
 gst/volume/Makefile
 sys/Makefile
 sys/ximage/Makefile
