@@ -83,25 +83,58 @@ G_DEFINE_TYPE_WITH_CODE (GstImlscale, gst_imlscale, GST_TYPE_VIDEO_FILTER,
   GST_DEBUG_CATEGORY_INIT (gst_imlscale_debug_category, "imlscale", 0,
   "debug category for imlscale element"));
 
+static GstStaticCaps gst_iml_scale_format_caps =
+    GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE (GST_VIDEO_FORMATS) ";"
+    GST_VIDEO_CAPS_MAKE_WITH_FEATURES ("ANY", GST_VIDEO_FORMATS));
+
+
+static GstCaps *
+gst_iml_scale_get_capslist (void)
+{
+  static GstCaps *caps = NULL;
+  static volatile gsize inited = 0;
+
+  if (g_once_init_enter (&inited)) {
+    caps = gst_static_caps_get (&gst_iml_scale_format_caps);
+    g_once_init_leave (&inited, 1);
+  }
+  return caps;
+}
+
+
+static GstPadTemplate *
+gst_iml_scale_src_template_factory (void)
+{
+  return gst_pad_template_new ("src", GST_PAD_SRC, GST_PAD_ALWAYS,
+      gst_iml_scale_get_capslist ());
+}
+
+static GstPadTemplate *
+gst_iml_scale_sink_template_factory (void)
+{
+  return gst_pad_template_new ("sink", GST_PAD_SINK, GST_PAD_ALWAYS,
+      gst_iml_scale_get_capslist ());
+}
+
+
 static void
 gst_imlscale_class_init (GstImlscaleClass * klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GstElementClass *element_class = (GstElementClass *) klass;
   GstBaseTransformClass *base_transform_class = GST_BASE_TRANSFORM_CLASS (klass);
   GstVideoFilterClass *video_filter_class = GST_VIDEO_FILTER_CLASS (klass);
 
   /* Setting up pads and setting metadata should be moved to
      base_class_init if you intend to subclass this class. */
-  gst_element_class_add_pad_template (GST_ELEMENT_CLASS(klass),
-      gst_pad_template_new ("src", GST_PAD_SRC, GST_PAD_ALWAYS,
-        gst_caps_from_string (VIDEO_SRC_CAPS)));
-  gst_element_class_add_pad_template (GST_ELEMENT_CLASS(klass),
-      gst_pad_template_new ("sink", GST_PAD_SINK, GST_PAD_ALWAYS,
-        gst_caps_from_string (VIDEO_SINK_CAPS)));
+  gst_element_class_add_pad_template (element_class,
+      gst_iml_scale_sink_template_factory ());
+  gst_element_class_add_pad_template (element_class,
+      gst_iml_scale_src_template_factory ());
 
-  gst_element_class_set_static_metadata (GST_ELEMENT_CLASS(klass),
-      "FIXME Long name", "Generic", "FIXME Description",
-      "FIXME <fixme@example.com>");
+  gst_element_class_set_static_metadata (element_class,
+      "IML scaler", "Logic/Scaler", "IML Logic Resize video",
+      "IML <yielkyu.yang@iml.co.kr>");
 
   gobject_class->set_property = gst_imlscale_set_property;
   gobject_class->get_property = gst_imlscale_get_property;
