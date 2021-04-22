@@ -203,6 +203,8 @@ gst_imlscale_finalize (GObject * object)
   GST_DEBUG_OBJECT (imlscale, "finalize");
 
   /* clean up object here */
+   if (imlscale->convert)
+    gst_video_converter_free (imlscale->convert);
 
   G_OBJECT_CLASS (gst_imlscale_parent_class)->finalize (object);
 }
@@ -246,6 +248,8 @@ gst_imlscale_transform_frame (GstVideoFilter * filter, GstVideoFrame * inframe,
   GstImlscale *imlscale = GST_IMLSCALE (filter);
 
   GST_DEBUG_OBJECT (imlscale, "transform_frame");
+    
+  gst_video_converter_frame (imlscale->convert, in_frame, out_frame);
 
   return GST_FLOW_OK;
 }
