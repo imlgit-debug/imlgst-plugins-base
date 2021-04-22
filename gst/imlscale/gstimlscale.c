@@ -34,8 +34,6 @@
 #include "config.h"
 #endif
 
-#include <gst/gst.h>
-
 #include <gst/video/gstvideometa.h>
 #include <gst/video/gstvideopool.h>
 
