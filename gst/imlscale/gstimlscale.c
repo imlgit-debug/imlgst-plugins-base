@@ -262,7 +262,7 @@ gst_imlscale_transform_frame_ip (GstVideoFilter * filter, GstVideoFrame * frame)
     
   src = GST_VIDEO_FRAME_PLANE_DATA (frame, 0);
     
-  for (h = 0; h < 480; w++)
+  for (h = 0; h < 480; h++)
   {
       for (w = 0; w < 640; w++)
       {
