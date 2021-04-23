@@ -255,7 +255,24 @@ gst_imlscale_transform_frame (GstVideoFilter * filter, GstVideoFrame * inframe,
 static GstFlowReturn
 gst_imlscale_transform_frame_ip (GstVideoFilter * filter, GstVideoFrame * frame)
 {
+  gint i,j;
+  guint8 *src;
+    
   GstImlscale *imlscale = GST_IMLSCALE (filter);
+    
+  src = GST_VIDEO_FRAME_PLANE_DATA (frame, 0);
+    
+  for (i = 0; i < 480; i++)
+  {
+      for (j = 0; j < 640; j++)
+      {
+        src[A] = 0xff; 
+        src[C1] = 0;
+        src[C2] = 0;
+        src[C3] = 0;
+        src += 4;
+      }
+  }
 
   GST_DEBUG_OBJECT (imlscale, "transform_frame_ip");
 
