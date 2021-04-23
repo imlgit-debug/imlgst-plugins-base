@@ -266,11 +266,10 @@ gst_imlscale_transform_frame_ip (GstVideoFilter * filter, GstVideoFrame * frame)
   {
       for (w = 0; w < 640; w++)
       {
-        src[(w+(h*640))] = 0xff; 
+        src[(w+(h*640))] = 0; 
         src[(w+(h*640))+1] = 0;
         src[(w+(h*640))+2] = 0;
-        src[(w+(h*640))+3] = 0;
-        src += 4;
+        src += 3;
       }
   }
 
