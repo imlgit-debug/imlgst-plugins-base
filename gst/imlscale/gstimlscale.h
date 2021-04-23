@@ -39,6 +39,8 @@ typedef struct _GstImlscaleClass GstImlscaleClass;
 struct _GstImlscale
 {
   GstVideoFilter base_imlscale;
+  
+  GstVideoConverter *convert;
 
 };
 
