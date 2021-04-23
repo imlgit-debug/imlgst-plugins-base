@@ -235,7 +235,7 @@ gst_imlscale_set_info (GstVideoFilter * filter, GstCaps * incaps,
 
   GST_DEBUG_OBJECT (imlscale, "set_info");
     
-  gst_base_transform_set_passthrough (GST_BASE_TRANSFORM (filter), TRUE);
+  //gst_base_transform_set_passthrough (GST_BASE_TRANSFORM (filter), TRUE);
 
   return TRUE;
 }
