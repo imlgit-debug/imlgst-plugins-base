@@ -255,21 +255,21 @@ gst_imlscale_transform_frame (GstVideoFilter * filter, GstVideoFrame * inframe,
 static GstFlowReturn
 gst_imlscale_transform_frame_ip (GstVideoFilter * filter, GstVideoFrame * frame)
 {
-  gint i,j;
+  gint h,w;
   guint8 *src;
     
   GstImlscale *imlscale = GST_IMLSCALE (filter);
     
   src = GST_VIDEO_FRAME_PLANE_DATA (frame, 0);
     
-  for (i = 0; i < 480; i++)
+  for (h = 0; h < 480; w++)
   {
-      for (j = 0; j < 640; j++)
+      for (w = 0; w < 640; w++)
       {
-        src[A] = 0xff; 
-        src[C1] = 0;
-        src[C2] = 0;
-        src[C3] = 0;
+        src[(w+(h*640))] = 0xff; 
+        src[(w+(h*640))+1] = 0;
+        src[(w+(h*640))+2] = 0;
+        src[(w+(h*640))+3] = 0;
         src += 4;
       }
   }
