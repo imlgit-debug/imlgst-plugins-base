@@ -190,8 +190,8 @@ gst_imlscale_class_init (GstImlscaleClass * klass)
   gst_element_class_add_pad_template (element_class,
       gst_iml_scale_src_template_factory ());
        
-  base_transform_class->start = GST_DEBUG_FUNCPTR (gst_imlscale_start);
-  base_transform_class->stop = GST_DEBUG_FUNCPTR (gst_imlscale_stop);
+  //base_transform_class->start = GST_DEBUG_FUNCPTR (gst_imlscale_start);
+  //base_transform_class->stop = GST_DEBUG_FUNCPTR (gst_imlscale_stop);
     
   base_transform_class->transform_ip_on_passthrough = FALSE;
   base_transform_class->transform_caps =
