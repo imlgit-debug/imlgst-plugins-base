@@ -120,26 +120,27 @@ gst_iml_scale_sink_template_factory (void)
 static void
 gst_imlscale_class_init (GstImlscaleClass * klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *gobject_class = (GObjectClass *) klass;
   GstElementClass *element_class = (GstElementClass *) klass;
-  GstBaseTransformClass *base_transform_class = GST_BASE_TRANSFORM_CLASS (klass);
-  GstVideoFilterClass *video_filter_class = GST_VIDEO_FILTER_CLASS (klass);
+  GstBaseTransformClass *base_transform_class = (GstBaseTransformClass *) klass;
+  GstVideoFilterClass *video_filter_class = (GstVideoFilterClass *) klass;
 
+  gobject_class->set_property = gst_imlscale_set_property;
+  gobject_class->get_property = gst_imlscale_get_property;
+  gobject_class->dispose = gst_imlscale_dispose;
+  gobject_class->finalize = gst_imlscale_finalize;
+    
+  gst_element_class_set_static_metadata (element_class,
+     "IML scaler", "Logic/Scaler", "IML Logic Resize video",
+     "IML <yielkyu.yang@iml.co.kr>");
+   
   /* Setting up pads and setting metadata should be moved to
      base_class_init if you intend to subclass this class. */
   gst_element_class_add_pad_template (element_class,
       gst_iml_scale_sink_template_factory ());
   gst_element_class_add_pad_template (element_class,
       gst_iml_scale_src_template_factory ());
-
-  gst_element_class_set_static_metadata (element_class,
-      "IML scaler", "Logic/Scaler", "IML Logic Resize video",
-      "IML <yielkyu.yang@iml.co.kr>");
-
-  gobject_class->set_property = gst_imlscale_set_property;
-  gobject_class->get_property = gst_imlscale_get_property;
-  gobject_class->dispose = gst_imlscale_dispose;
-  gobject_class->finalize = gst_imlscale_finalize;
+       
   base_transform_class->start = GST_DEBUG_FUNCPTR (gst_imlscale_start);
   base_transform_class->stop = GST_DEBUG_FUNCPTR (gst_imlscale_stop);
   video_filter_class->set_info = GST_DEBUG_FUNCPTR (gst_imlscale_set_info);
@@ -235,7 +236,13 @@ gst_imlscale_set_info (GstVideoFilter * filter, GstCaps * incaps,
 
   GST_DEBUG_OBJECT (imlscale, "set_info");
     
-  gst_base_transform_set_passthrough (GST_BASE_TRANSFORM (filter), FALSE);
+  switch (GST_VIDEO_INFO_FORMAT (in_info)) 
+  {
+        case GST_VIDEO_FORMAT_NV12:
+        case GST_VIDEO_FORMAT_NV21:
+             gst_base_transform_set_passthrough (GST_BASE_TRANSFORM (filter), TRUE);
+        break;   
+  }
 
   return TRUE;
 }
