@@ -202,9 +202,9 @@ gst_imlscale_class_init (GstImlscaleClass * klass)
   /* Setting up pads and setting metadata should be moved to
      base_class_init if you intend to subclass this class. */
     
-  gst_element_class_add_static_pad_template (gstelement_class,
+  gst_element_class_add_static_pad_template (element_class,
       &gst_video_balance_sink_template);
-  gst_element_class_add_static_pad_template (gstelement_class,
+  gst_element_class_add_static_pad_template (element_class,
       &gst_video_balance_src_template);
 
 #if 0
