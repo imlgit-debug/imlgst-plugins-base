@@ -116,6 +116,25 @@ gst_iml_scale_sink_template_factory (void)
       gst_iml_scale_get_capslist ());
 }
 
+static GstCaps *
+gst_imlscale_transform_caps (GstBaseTransform * trans,
+    GstPadDirection direction, GstCaps * caps, GstCaps * filter)
+{
+    GstImlscale *imlscale = GST_VIDEO_BALANCE (trans);
+    GstCaps *ret;
+
+    if (filter) 
+    {
+      ret = gst_caps_intersect_full (filter, caps, GST_CAPS_INTERSECT_FIRST);
+    } 
+    else 
+    {
+      ret = gst_caps_ref (caps);
+    }
+    
+    return ret;
+}
+
 static void
 gst_video_balance_semiplanar_yuv (GstImlscale * scale,
     GstVideoFrame * frame)
@@ -175,6 +194,8 @@ gst_imlscale_class_init (GstImlscaleClass * klass)
   base_transform_class->stop = GST_DEBUG_FUNCPTR (gst_imlscale_stop);
     
   base_transform_class->transform_ip_on_passthrough = FALSE;
+  base_transform_class->transform_caps =
+      GST_DEBUG_FUNCPTR (gst_imlscale_transform_caps);
     
   video_filter_class->set_info = GST_DEBUG_FUNCPTR (gst_imlscale_set_info);
   video_filter_class->transform_frame = GST_DEBUG_FUNCPTR (gst_imlscale_transform_frame);
@@ -185,6 +206,19 @@ gst_imlscale_class_init (GstImlscaleClass * klass)
 static void
 gst_imlscale_init (GstImlscale *imlscale)
 {
+     
+  gint i;
+    
+  imlscale->tableu[0] = g_new (guint8, 256 * 256 * 2);
+  
+  for (i = 0; i < 256; i++) 
+  {
+    imlscale->tableu[i] =
+        imlscale->tableu[0] + i * 256 * sizeof (guint8);
+    imlscale->tablev[i] =
+        imlscale->tableu[0] + 256 * 256 * sizeof (guint8) +
+        i * 256 * sizeof (guint8);
+  }
 }
 
 void
@@ -237,7 +271,7 @@ gst_imlscale_finalize (GObject * object)
   GST_DEBUG_OBJECT (imlscale, "finalize");
 
   /* clean up object here */
-
+  g_free (imlscale->tableu[0]);
   G_OBJECT_CLASS (gst_imlscale_parent_class)->finalize (object);
 }
 
