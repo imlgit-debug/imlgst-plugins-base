@@ -69,12 +69,28 @@ enum
 /* pad templates */
 
 /* FIXME: add/remove formats you can handle */
-#define VIDEO_SRC_CAPS \
-    GST_VIDEO_CAPS_MAKE("{ I420, Y444, Y42B, UYVY, RGBA }")
 
-/* FIXME: add/remove formats you can handle */
-#define VIDEO_SINK_CAPS \
-    GST_VIDEO_CAPS_MAKE("{ I420, Y444, Y42B, UYVY, RGBA }")
+#define PROCESSING_CAPS \
+  "{ AYUV, ARGB, BGRA, ABGR, RGBA, Y444, xRGB, RGBx, " \
+  "xBGR, BGRx, RGB, BGR, Y42B, YUY2, UYVY, YVYU, " \
+  "I420, YV12, IYUV, Y41B, NV12, NV21 }"
+
+static GstStaticPadTemplate gst_imlscale_src_template =
+    GST_STATIC_PAD_TEMPLATE ("src",
+    GST_PAD_SRC,
+    GST_PAD_ALWAYS,
+    GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE (PROCESSING_CAPS) ";"
+        "video/x-raw(ANY)")
+    );
+
+static GstStaticPadTemplate gst_imlscale_sink_template =
+    GST_STATIC_PAD_TEMPLATE ("sink",
+    GST_PAD_SINK,
+    GST_PAD_ALWAYS,
+    GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE (PROCESSING_CAPS) ";"
+        "video/x-raw(ANY)")
+    );
+
 
 /* class initialization */
 #define GST_VIDEO_FORMATS GST_VIDEO_FORMATS_ALL
@@ -185,11 +201,19 @@ gst_imlscale_class_init (GstImlscaleClass * klass)
    
   /* Setting up pads and setting metadata should be moved to
      base_class_init if you intend to subclass this class. */
+    
+  gst_element_class_add_static_pad_template (gstelement_class,
+      &gst_video_balance_sink_template);
+  gst_element_class_add_static_pad_template (gstelement_class,
+      &gst_video_balance_src_template);
+
+#if 0
   gst_element_class_add_pad_template (element_class,
       gst_iml_scale_sink_template_factory ());
   gst_element_class_add_pad_template (element_class,
       gst_iml_scale_src_template_factory ());
-       
+#endif
+    
   //base_transform_class->start = GST_DEBUG_FUNCPTR (gst_imlscale_start);
   //base_transform_class->stop = GST_DEBUG_FUNCPTR (gst_imlscale_stop);
     
@@ -198,7 +222,7 @@ gst_imlscale_class_init (GstImlscaleClass * klass)
       GST_DEBUG_FUNCPTR (gst_imlscale_transform_caps);
     
   video_filter_class->set_info = GST_DEBUG_FUNCPTR (gst_imlscale_set_info);
-  video_filter_class->transform_frame = GST_DEBUG_FUNCPTR (gst_imlscale_transform_frame);
+  //video_filter_class->transform_frame = GST_DEBUG_FUNCPTR (gst_imlscale_transform_frame);
   video_filter_class->transform_frame_ip = GST_DEBUG_FUNCPTR (gst_imlscale_transform_frame_ip);
 
 }
