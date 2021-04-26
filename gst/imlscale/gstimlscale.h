@@ -40,7 +40,7 @@ struct _GstImlscale
 {
   GstVideoFilter base_imlscale;
   
-  GstVideoConverter *convert;
+  void (*process) (GstImlscale *scale, GstVideoFrame *frame);
 
 };
 
