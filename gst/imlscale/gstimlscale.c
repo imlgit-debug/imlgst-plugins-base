@@ -235,7 +235,7 @@ gst_imlscale_set_info (GstVideoFilter * filter, GstCaps * incaps,
 
   GST_DEBUG_OBJECT (imlscale, "set_info");
     
-  //gst_base_transform_set_passthrough (GST_BASE_TRANSFORM (filter), TRUE);
+  gst_base_transform_set_passthrough (GST_BASE_TRANSFORM (filter), FALSE);
 
   return TRUE;
 }
@@ -259,7 +259,7 @@ gst_imlscale_transform_frame_ip (GstVideoFilter * filter, GstVideoFrame * frame)
   guint8 *src;
     
   GstImlscale *imlscale = GST_IMLSCALE (filter);
-    
+#if 0    
   src = GST_VIDEO_FRAME_PLANE_DATA (frame, 0);
     
   for (h = 0; h < 480; h++)
@@ -272,7 +272,7 @@ gst_imlscale_transform_frame_ip (GstVideoFilter * filter, GstVideoFrame * frame)
         src += 3;
       }
   }
-
+#endif
   GST_DEBUG_OBJECT (imlscale, "transform_frame_ip");
 
   return GST_FLOW_OK;
