@@ -120,7 +120,7 @@ static GstCaps *
 gst_imlscale_transform_caps (GstBaseTransform * trans,
     GstPadDirection direction, GstCaps * caps, GstCaps * filter)
 {
-    GstImlscale *imlscale = GST_VIDEO_BALANCE (trans);
+    GstImlscale *imlscale = GST_IMLSCALE(trans);
     GstCaps *ret;
 
     if (filter) 
