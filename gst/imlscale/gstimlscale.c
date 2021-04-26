@@ -116,6 +116,36 @@ gst_iml_scale_sink_template_factory (void)
       gst_iml_scale_get_capslist ());
 }
 
+static void
+gst_video_balance_semiplanar_yuv (GstImlscale * scale,
+    GstVideoFrame * frame)
+{
+    gint x, y;
+    guint8 *ydata;
+    guint8 *uvdata;
+    gint ystride, uvstride;
+    gint width, height;
+    guint8 *tabley = scale->tabley;
+    
+    width = GST_VIDEO_FRAME_WIDTH (frame);
+    height = GST_VIDEO_FRAME_HEIGHT (frame);
+
+    ydata = GST_VIDEO_FRAME_PLANE_DATA (frame, 0);
+    ystride = GST_VIDEO_FRAME_PLANE_STRIDE (frame, 0);
+    
+    for (y = 0; y < height/2; y++) 
+    {
+        guint8 *yptr;
+
+        yptr = ydata + y * ystride;
+        for (x = 0; x < width/2; x++) 
+        {
+            *yptr = 255;
+            yptr++;
+        }
+    }
+}
+
 
 static void
 gst_imlscale_class_init (GstImlscaleClass * klass)
@@ -143,6 +173,9 @@ gst_imlscale_class_init (GstImlscaleClass * klass)
        
   base_transform_class->start = GST_DEBUG_FUNCPTR (gst_imlscale_start);
   base_transform_class->stop = GST_DEBUG_FUNCPTR (gst_imlscale_stop);
+    
+  base_transform_class->transform_ip_on_passthrough = FALSE;
+    
   video_filter_class->set_info = GST_DEBUG_FUNCPTR (gst_imlscale_set_info);
   video_filter_class->transform_frame = GST_DEBUG_FUNCPTR (gst_imlscale_transform_frame);
   video_filter_class->transform_frame_ip = GST_DEBUG_FUNCPTR (gst_imlscale_transform_frame_ip);
@@ -242,7 +275,7 @@ gst_imlscale_set_info (GstVideoFilter * filter, GstCaps * incaps,
   {
         case GST_VIDEO_FORMAT_NV12:
         case GST_VIDEO_FORMAT_NV21:
-             gst_base_transform_set_passthrough (GST_BASE_TRANSFORM (filter), TRUE);
+             imlscale->process = gst_video_balance_semiplanar_yuv;
         break;   
   }
 
@@ -268,21 +301,12 @@ gst_imlscale_transform_frame_ip (GstVideoFilter * filter, GstVideoFrame * frame)
   guint8 *src;
     
   GstImlscale *imlscale = GST_IMLSCALE (filter);
-#if 0    
-  src = GST_VIDEO_FRAME_PLANE_DATA (frame, 0);
-    
-  for (h = 0; h < 480; h++)
-  {
-      for (w = 0; w < 640; w++)
-      {
-        src[(w+(h*640))] = 0; 
-        src[(w+(h*640))+1] = 0;
-        src[(w+(h*640))+2] = 0;
-        src += 3;
-      }
-  }
-#endif
+
   GST_DEBUG_OBJECT (imlscale, "transform_frame_ip");
+    
+  GST_OBJECT_LOCK (imlscale);
+  imlscale->process (imlscale, frame);
+  GST_OBJECT_UNLOCK (imlscale);
 
   return GST_FLOW_OK;
 }
