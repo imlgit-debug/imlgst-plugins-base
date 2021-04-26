@@ -40,6 +40,11 @@ struct _GstImlscale
 {
   GstVideoFilter base_imlscale;
   
+  
+  /* tables */
+  guint8 tabley[256];
+  guint8 *tableu[256];
+  guint8 *tablev[256];
   void (*process) (GstImlscale *scale, GstVideoFrame *frame);
 
 };
