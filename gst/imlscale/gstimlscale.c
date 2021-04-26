@@ -236,6 +236,8 @@ gst_imlscale_set_info (GstVideoFilter * filter, GstCaps * incaps,
 
   GST_DEBUG_OBJECT (imlscale, "set_info");
     
+  imlscale->process = NULL;
+    
   switch (GST_VIDEO_INFO_FORMAT (in_info)) 
   {
         case GST_VIDEO_FORMAT_NV12:
